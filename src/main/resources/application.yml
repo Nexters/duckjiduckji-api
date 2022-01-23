@@ -1,0 +1,8 @@
+management:
+  server:
+    port: 19010
+  endpoints:
+    web:
+      base-path: /monitoring
+      exposure:
+        include: health
