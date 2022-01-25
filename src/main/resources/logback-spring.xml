@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <springProfile name="default">
+        <logger name="org.springframework.web.reactive.function.client.ExchangeFunctions" level="DEBUG"/>
+        <logger name="org.springframework.r2dbc" level="DEBUG"/>
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <!-- 어플 로그 결정 필요 -->
+        <logger name="org.springframework.web.reactive.function.client.ExchangeFunctions" level="DEBUG"/>
+        <logger name="org.springframework.r2dbc" level="DEBUG"/>
+
+        <!-- To enable access-log, put '-Dreactor.netty.http.server.accessLogEnabled=true' on vm option -->
+        <appender name="accessLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/home/logs/boot/access.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <!-- daily rollover -->
+                <fileNamePattern>/home1/irteam/logs/boot/access.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>2GB</totalSizeCap>
+                <maxHistory>1</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%msg%n</pattern>
+            </encoder>
+        </appender>
+        <appender name="async2" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="accessLog" />
+        </appender>
+        <logger name="reactor.netty.http.server.AccessLog" level="INFO" additivity="false">
+            <appender-ref ref="async2"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+    </springProfile>
+
+
+    <springProfile name="prod">
+        <!-- 어플 로그 결정 필요 -->
+
+        <!-- To enable access-log, put '-Dreactor.netty.http.server.accessLogEnabled=true' on vm option -->
+        <appender name="accessLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/home/logs/boot/access.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <!-- daily rollover -->
+                <fileNamePattern>/home1/irteam/logs/boot/access.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <maxFileSize>1GB</maxFileSize>
+                <totalSizeCap>2GB</totalSizeCap>
+                <maxHistory>1</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%msg%n</pattern>
+            </encoder>
+        </appender>
+        <appender name="async2" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="accessLog" />
+        </appender>
+        <logger name="reactor.netty.http.server.AccessLog" level="INFO" additivity="false">
+            <appender-ref ref="async2"/>
+        </logger>
+
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+</configuration>
+
