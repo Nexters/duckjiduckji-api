@@ -3,7 +3,7 @@
 ### Environment 
 - Spring Boot 2.6.2
 - Spring Webflux
-- R2DBC
+- r2dbc/mongodb-reactive
 
 ### Swagger
 
