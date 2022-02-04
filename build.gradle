@@ -24,6 +24,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
@@ -31,6 +32,8 @@ dependencies {
     runtimeOnly 'io.r2dbc:r2dbc-h2'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
     testCompile 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.3.1")
