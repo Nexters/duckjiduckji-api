@@ -2,6 +2,8 @@ package com.nexters.duckji.api;
 
 import javax.validation.Valid;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,14 @@ public class RoomController {
 	@PostMapping
 	public Mono<ApiResponse<Room>> register(@RequestBody @Valid RoomRegisterRequest roomRegisterRequest) {
 		return roomService.register(roomRegisterRequest)
-				.map(ApiResponse::create);
+				.map(ApiResponse::create)
+				.switchIfEmpty(Mono.just(ApiResponse.empty()));
+	}
+
+	@GetMapping("/{roomId}")
+	public Mono<ApiResponse<Room>> getById(@PathVariable String roomId) {
+		return roomService.findById(roomId)
+				.map(ApiResponse::create)
+				.switchIfEmpty(Mono.just(ApiResponse.empty()));
 	}
 }
