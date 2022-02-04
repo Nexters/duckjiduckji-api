@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 import com.mongodb.MongoClientSettings;
@@ -67,5 +68,10 @@ public class ReaciveMongoDBConfiguration extends AbstractReactiveMongoConfigurat
 				.build();
 
 		return new ReactiveMongoTransactionManager(reactiveMongoDbFactory(), transactionOptions);
+	}
+
+	@Bean
+	public ReactiveMongoTemplate reactiveMongoTemplate() {
+		return new ReactiveMongoTemplate(reactiveMongoClient(), getDatabaseName());
 	}
 }
