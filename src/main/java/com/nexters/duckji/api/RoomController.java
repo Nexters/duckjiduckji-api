@@ -14,8 +14,11 @@ import com.nexters.duckji.model.ApiResponse;
 import com.nexters.duckji.model.RoomRegisterRequest;
 import com.nexters.duckji.service.RoomService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
+@Api(tags = "Room")
 @RestController
 @RequestMapping("/rooms")
 public class RoomController {
@@ -25,6 +28,7 @@ public class RoomController {
 		this.roomService = roomService;
 	}
 
+	@ApiOperation("방 등록")
 	@PostMapping
 	public Mono<ApiResponse<Room>> register(@RequestBody @Valid RoomRegisterRequest roomRegisterRequest) {
 		return roomService.register(roomRegisterRequest)
@@ -32,6 +36,7 @@ public class RoomController {
 				.switchIfEmpty(Mono.just(ApiResponse.empty()));
 	}
 
+	@ApiOperation("방 조회")
 	@GetMapping("/{roomId}")
 	public Mono<ApiResponse<Room>> getById(@PathVariable String roomId) {
 		return roomService.findById(roomId)
