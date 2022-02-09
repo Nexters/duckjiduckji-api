@@ -2,6 +2,8 @@ package com.nexters.duckji.api;
 
 import javax.validation.Valid;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nexters.duckji.domain.Content;
 import com.nexters.duckji.model.ApiResponse;
 import com.nexters.duckji.model.ContentRegisterRequest;
+import com.nexters.duckji.model.ContentsApiParams;
+import com.nexters.duckji.model.ContentsResponse;
+import com.nexters.duckji.model.PageInfoParams;
 import com.nexters.duckji.service.ContentsService;
 
 import io.swagger.annotations.Api;
@@ -35,6 +40,22 @@ public class ContentsController {
 	@PostMapping
 	public Mono<ApiResponse<Content>> register(@RequestBody @Valid ContentRegisterRequest contentRegisterRequest) {
 		return contentsService.register(contentRegisterRequest)
+				.map(ApiResponse::create)
+				.switchIfEmpty(Mono.just(ApiResponse.empty()));
+	}
+
+	@ApiOperation("컨텐츠 단건 조회")
+	@GetMapping("/{contentId}")
+	public Mono<ApiResponse<Content>> getById(@PathVariable String contentId) {
+		return contentsService.findById(contentId)
+				.map(ApiResponse::create)
+				.switchIfEmpty(Mono.just(ApiResponse.empty()));
+	}
+
+	@ApiOperation("컨텐츠 리스트 조회")
+	@GetMapping
+	public Mono<ApiResponse<ContentsResponse>> getContents(@Valid ContentsApiParams params, @Valid PageInfoParams pageInfoParams) {
+		return contentsService.findAll(params, pageInfoParams)
 				.map(ApiResponse::create)
 				.switchIfEmpty(Mono.just(ApiResponse.empty()));
 	}
