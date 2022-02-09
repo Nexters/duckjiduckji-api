@@ -6,6 +6,7 @@
     <springProfile name="default">
         <logger name="org.springframework.web.reactive.function.client.ExchangeFunctions" level="DEBUG"/>
         <logger name="org.springframework.r2dbc" level="DEBUG"/>
+        <logger name="org.springframework.data.mongodb.core.ReactiveMongoTemplate" level="DEBUG"/>
         <root level="info">
             <appender-ref ref="CONSOLE"/>
         </root>
