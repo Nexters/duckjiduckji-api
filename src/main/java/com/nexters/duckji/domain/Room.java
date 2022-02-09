@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Document(collection = "Room")
 @EqualsAndHashCode
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Room implements AuditableDocument {
 
 	@Id
