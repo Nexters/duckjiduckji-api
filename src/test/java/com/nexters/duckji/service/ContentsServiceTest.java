@@ -45,12 +45,13 @@ class ContentsServiceTest {
 		StepVerifier.create(contentsService.register(registerRequest)
 				.flatMap(c -> contentsService.findById(c.getId()))
 		).consumeNextWith(content -> {
-			assertNotNull(content.getRoomId());
+			String roomId = content.getRoomId();
+			assertNotNull(roomId);
 			assertEquals(content.getContentType(), ContentType.POLAROID);
 			assertTrue(content.getContent().length() > 0);
 			assertTrue(content.getImages().size() <= 5);
 			assertNotNull(content.getPoint());
-			contentsService.deleteById(content.getId()).block();
+			contentsService.deleteById(content.getId(), roomId).block();
 		}).verifyComplete();
 	}
 
@@ -74,13 +75,13 @@ class ContentsServiceTest {
 		StepVerifier.create(contentsService.patchById(updateRequest, contentId)
 				.flatMap(c -> contentsService.findById(contentId))
 		).consumeNextWith(content -> {
-			assertEquals(origin.getRoomId(), content.getRoomId());
+			String roomId = content.getRoomId();
+			assertEquals(origin.getRoomId(), roomId);
 			assertEquals(origin.getContentType(), content.getContentType());
 			assertTrue(content.getContent().length() > 0);
-			assertTrue(content.getImages().size() <= 5);
 			assertNotEquals(origin.getEdtAt(), content.getEdtAt());
 			assertNotNull(content.getPoint());
-			contentsService.deleteById(content.getId()).block();
+			contentsService.deleteById(content.getId(), roomId).block();
 		}).verifyComplete();
 	}
 
