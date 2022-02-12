@@ -1,8 +1,8 @@
 spring:
   r2dbc:
     url: r2dbc:mysql://127.0.0.1:3306/duckji?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Seoul
-    username:
-    password:
+    username: duckji
+    password: duckji123
   data:
     mongodb:
       username: duckji
