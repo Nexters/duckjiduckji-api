@@ -15,8 +15,10 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,4 +47,8 @@ public class Content implements AuditableDocument {
 	@LastModifiedDate
 	private LocalDateTime edtAt;
 	private List<String> tags;
+
+	public boolean validRoomId(String roomId) {
+		return this.roomId != null && this.roomId.equals(roomId);
+	}
 }
