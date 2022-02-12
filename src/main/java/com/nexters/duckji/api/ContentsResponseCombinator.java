@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import com.nexters.duckji.domain.Content;
-import com.nexters.duckji.model.ContentsResponse;
-import com.nexters.duckji.model.PageInfo;
+import com.nexters.duckji.dto.ContentsResponse;
+import com.nexters.duckji.dto.PageInfo;
 
 import reactor.core.publisher.Mono;
 

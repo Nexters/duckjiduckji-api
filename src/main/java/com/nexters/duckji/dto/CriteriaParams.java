@@ -1,4 +1,4 @@
-package com.nexters.duckji.model;
+package com.nexters.duckji.dto;
 
 import org.springframework.data.mongodb.core.query.Criteria;
 

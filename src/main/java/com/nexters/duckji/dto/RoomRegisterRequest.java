@@ -1,4 +1,4 @@
-package com.nexters.duckji.model;
+package com.nexters.duckji.dto;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

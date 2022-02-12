@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexters.duckji.domain.Room;
-import com.nexters.duckji.model.ApiResponse;
-import com.nexters.duckji.model.RoomRegisterRequest;
+import com.nexters.duckji.dto.ApiResponse;
+import com.nexters.duckji.dto.RoomRegisterRequest;
 import com.nexters.duckji.service.RoomService;
 
 import io.swagger.annotations.Api;

@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import com.nexters.duckji.domain.Content;
-import com.nexters.duckji.model.ContentRegisterRequest;
-import com.nexters.duckji.model.PolaroidRegisterRequest;
+import com.nexters.duckji.dto.ContentRegisterRequest;
+import com.nexters.duckji.dto.PolaroidRegisterRequest;
 
 @Mapper
 public interface ContentMapper {
