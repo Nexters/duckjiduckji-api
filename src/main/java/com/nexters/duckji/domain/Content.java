@@ -35,7 +35,7 @@ public class Content implements AuditableDocument {
 	private String frameType;
 	private Point point;
 	private String rotation;
-	private String opacity;
+	private Double opacity;
 	private String font;
 	private Background background;
 	private Double width;
