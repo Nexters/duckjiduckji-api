@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nexters.duckji.domain.Content;
-import com.nexters.duckji.model.ApiResponse;
-import com.nexters.duckji.model.ContentRegisterRequest;
-import com.nexters.duckji.model.ContentsApiParams;
-import com.nexters.duckji.model.ContentsResponse;
-import com.nexters.duckji.model.PageInfoParams;
+import com.nexters.duckji.dto.ApiResponse;
+import com.nexters.duckji.dto.ContentRegisterRequest;
+import com.nexters.duckji.dto.ContentsApiParams;
+import com.nexters.duckji.dto.ContentsResponse;
+import com.nexters.duckji.dto.PageInfoParams;
 import com.nexters.duckji.service.ContentsService;
 
 import io.swagger.annotations.Api;

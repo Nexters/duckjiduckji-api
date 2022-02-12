@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import com.nexters.duckji.api.ContentsResponseCombinator;
 import com.nexters.duckji.domain.Content;
 import com.nexters.duckji.mapstruct.ContentMapper;
-import com.nexters.duckji.model.ContentRegisterRequest;
-import com.nexters.duckji.model.ContentsApiParams;
-import com.nexters.duckji.model.ContentsResponse;
-import com.nexters.duckji.model.PageInfoParams;
+import com.nexters.duckji.dto.ContentRegisterRequest;
+import com.nexters.duckji.dto.ContentsApiParams;
+import com.nexters.duckji.dto.ContentsResponse;
+import com.nexters.duckji.dto.PageInfoParams;
 import com.nexters.duckji.repository.ContentsRepository;
 
 import reactor.core.publisher.Mono;

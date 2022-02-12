@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mongodb.client.result.DeleteResult;
 import com.nexters.duckji.domain.Room;
-import com.nexters.duckji.model.RoomRegisterRequest;
+import com.nexters.duckji.dto.RoomRegisterRequest;
 import com.nexters.duckji.mapstruct.RoomMapper;
 import com.nexters.duckji.repository.RoomRepository;
 

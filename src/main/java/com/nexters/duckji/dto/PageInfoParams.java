@@ -1,4 +1,4 @@
-package com.nexters.duckji.model;
+package com.nexters.duckji.dto;
 
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.domain.PageRequest;
