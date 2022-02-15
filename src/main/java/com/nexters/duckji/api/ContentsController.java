@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,15 +40,6 @@ public class ContentsController {
 	@PostMapping
 	public Mono<ApiResponse<Content>> register(@RequestBody @Valid ContentRegisterRequest contentRegisterRequest) {
 		return contentsService.register(contentRegisterRequest)
-				.map(ApiResponse::create)
-				.switchIfEmpty(Mono.just(ApiResponse.empty()));
-	}
-
-	@ApiOperation(value = "컨텐츠 수정 / partial", notes = "existing property -> update / null property -> remove")
-	@PatchMapping("/{contentId}")
-	public Mono<ApiResponse<Content>> patch(@PathVariable String contentId,
-			@RequestBody @Valid ContentUpdateRequest contentUpdateRequest) {
-		return contentsService.patchById(contentUpdateRequest, contentId)
 				.map(ApiResponse::create)
 				.switchIfEmpty(Mono.just(ApiResponse.empty()));
 	}
