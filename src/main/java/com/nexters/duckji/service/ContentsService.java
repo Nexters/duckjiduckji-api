@@ -1,19 +1,32 @@
 package com.nexters.duckji.service;
 
+import static org.springframework.data.mongodb.core.query.Criteria.*;
 import static org.springframework.data.mongodb.core.query.Query.*;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
-import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.util.Map;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.mongodb.client.result.DeleteResult;
 import com.nexters.duckji.api.ContentsResponseCombinator;
 import com.nexters.duckji.domain.Content;
+import com.nexters.duckji.dto.update.ContentUpdateRequest;
 import com.nexters.duckji.mapstruct.ContentMapper;
 import com.nexters.duckji.dto.ContentRegisterRequest;
 import com.nexters.duckji.dto.ContentsApiParams;
 import com.nexters.duckji.dto.ContentsResponse;
 import com.nexters.duckji.dto.PageInfoParams;
 import com.nexters.duckji.repository.ContentsRepository;
+import com.nexters.duckji.util.JsonUtils;
+import com.nexters.duckji.util.MongoUtils;
 
 import reactor.core.publisher.Mono;
 
@@ -45,5 +58,36 @@ public class ContentsService extends ContentsResponseCombinator {
 		return template.find(query(apiParams.criteria()).with(pageRequest), Content.class)
 				.collectList()
 				.flatMap(contents -> combine(originLimit).apply(contents, 0L));
+	}
+
+	public Mono<Content> replaceById(ContentUpdateRequest updateRequest, String contentId) {
+		String roomId = updateRequest.getRoomId();
+
+		return contentsRepository.findById(contentId)
+				.filter(content -> content.validRoomId(roomId))
+				.map(content -> ContentMapper.INSTANCE.updateContent(updateRequest, content))
+				.flatMap(contentsRepository::save)
+				.switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
+	}
+
+	public Mono<Content> patchById(ContentUpdateRequest updateRequest, String contentId) {
+		String roomId = updateRequest.getRoomId();
+		Criteria criteria = where("_id").is(contentId).and("roomId").is(roomId);
+		FindAndModifyOptions options = FindAndModifyOptions.options().returnNew(true);
+
+		return Mono.just(JsonUtils.convert(updateRequest, new TypeReference<Map<String, Object>>(){}))
+				.map(MongoUtils::toUpdate)
+				.map(update -> update.set("edtAt", LocalDateTime.now()))
+				.flatMap(update -> template.update(Content.class)
+						.matching(query(criteria))
+						.apply(update)
+						.withOptions(options)
+						.findAndModify()
+						.switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+				);
+	}
+
+	public Mono<DeleteResult> deleteById(String contentId, String roomId) {
+		return template.remove(query(where("_id").is(contentId).and("roomId").is(roomId)), Content.class);
 	}
 }
