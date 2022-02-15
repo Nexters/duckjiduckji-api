@@ -13,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.nexters.duckji.config.TestEmbeddedMongoConfig;
-import com.nexters.duckji.domain.Content;
 import com.nexters.duckji.domain.ContentType;
 import com.nexters.duckji.dto.PolaroidRegisterRequest;
 import com.nexters.duckji.dto.update.PolaroidUpdateRequest;
@@ -55,36 +54,6 @@ class ContentsServiceTest {
 		}).verifyComplete();
 	}
 
-	@RepeatedTest(5)
-	public void 폴라로이드_컨텐츠_patch_성공() {
-		// insert
-		PolaroidRegisterRequest registerRequest = fixtureMonkey.giveMeBuilder(PolaroidRegisterRequest.class)
-				.set("contentType", ContentType.POLAROID)
-				.sample();
-
-		Content origin = contentsService.register(registerRequest).block();
-		assert origin != null;
-		String contentId = origin.getId();
-
-		// update
-		PolaroidUpdateRequest updateRequest = fixtureMonkey.giveMeBuilder(PolaroidUpdateRequest.class)
-				.set("roomId", origin.getRoomId())
-				.set("contentType", ContentType.POLAROID)
-				.sample();
-
-		StepVerifier.create(contentsService.patchById(updateRequest, contentId)
-				.flatMap(c -> contentsService.findById(contentId))
-		).consumeNextWith(content -> {
-			String roomId = content.getRoomId();
-			assertEquals(origin.getRoomId(), roomId);
-			assertEquals(origin.getContentType(), content.getContentType());
-			assertTrue(content.getContent().length() > 0);
-			assertNotEquals(origin.getEdtAt(), content.getEdtAt());
-			assertNotNull(content.getPoint());
-			contentsService.deleteById(content.getId(), roomId).block();
-		}).verifyComplete();
-	}
-
 	@Test
 	public void 존재하지않는_폴라로이드_컨텐츠_수정시_ResponseStatusException_리턴() {
 		String contentId = UUID.randomUUID().toString();
@@ -92,7 +61,7 @@ class ContentsServiceTest {
 				.set("contentType", ContentType.POLAROID)
 				.sample();
 
-		StepVerifier.create(contentsService.patchById(updateRequest, contentId))
+		StepVerifier.create(contentsService.replaceById(updateRequest, contentId))
 				.expectError(ResponseStatusException.class)
 				.verify();
 	}

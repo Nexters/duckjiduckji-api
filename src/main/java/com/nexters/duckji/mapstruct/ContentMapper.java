@@ -2,7 +2,6 @@ package com.nexters.duckji.mapstruct;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 import com.nexters.duckji.domain.Content;
@@ -11,7 +10,7 @@ import com.nexters.duckji.dto.update.ContentUpdateRequest;
 import com.nexters.duckji.dto.PolaroidRegisterRequest;
 import com.nexters.duckji.dto.update.PolaroidUpdateRequest;
 
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper
 public abstract class ContentMapper {
 	public static final ContentMapper INSTANCE = Mappers.getMapper(ContentMapper.class);
 
