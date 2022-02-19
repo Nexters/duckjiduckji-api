@@ -1,5 +1,7 @@
 package com.nexters.duckji.api;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nexters.duckji.domain.Room;
 import com.nexters.duckji.dto.ApiResponse;
+import com.nexters.duckji.dto.ListResponse;
+import com.nexters.duckji.dto.PageInfoParams;
 import com.nexters.duckji.dto.RoomRegisterRequest;
 import com.nexters.duckji.dto.update.RoomConfigUpdateRequest;
 import com.nexters.duckji.service.RoomService;
@@ -28,6 +32,13 @@ public class RoomController {
 
 	public RoomController(RoomService roomService) {
 		this.roomService = roomService;
+	}
+
+	@GetMapping
+	public Mono<ApiResponse<ListResponse<Room>>> getRooms(@Valid PageInfoParams pageInfoParams) {
+		return roomService.findAll(pageInfoParams)
+				.map(ApiResponse::create)
+				.switchIfEmpty(Mono.just(ApiResponse.empty()));
 	}
 
 	@ApiOperation("방 등록")
