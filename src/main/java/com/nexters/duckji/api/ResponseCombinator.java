@@ -3,19 +3,19 @@ package com.nexters.duckji.api;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import com.nexters.duckji.domain.Content;
-import com.nexters.duckji.dto.ContentsResponse;
+import com.nexters.duckji.domain.BaseDocument;
+import com.nexters.duckji.dto.ListResponse;
 import com.nexters.duckji.dto.PageInfo;
 
 import reactor.core.publisher.Mono;
 
-public class ContentsResponseCombinator {
+public class ResponseCombinator<T extends BaseDocument> {
 
-	protected BiFunction<? super List<Content>, Long, Mono<ContentsResponse>> combine(int originLimit) {
+	protected BiFunction<? super List<T>, Long, Mono<ListResponse<T>>> combine(int originLimit) {
 		return (contents, count) -> {
 			int size = contents.size();
 
-			Content last = null;
+			T last = null;
 			if (size > originLimit) {
 				last = contents.remove(size - 1);
 			}
@@ -27,7 +27,7 @@ public class ContentsResponseCombinator {
 						.build();
 			}
 
-			return Mono.just(ContentsResponse.builder()
+			return Mono.just(ListResponse.<T>builder()
 					.contents(contents)
 					.totalCount(count)
 					.pageInfo(pageInfo)

@@ -10,20 +10,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.mongodb.client.result.DeleteResult;
-import com.nexters.duckji.api.ContentsResponseCombinator;
+import com.nexters.duckji.api.ResponseCombinator;
 import com.nexters.duckji.domain.Content;
 import com.nexters.duckji.dto.update.ContentUpdateRequest;
 import com.nexters.duckji.mapstruct.ContentMapper;
 import com.nexters.duckji.dto.ContentRegisterRequest;
-import com.nexters.duckji.dto.ContentsApiParams;
-import com.nexters.duckji.dto.ContentsResponse;
+import com.nexters.duckji.dto.params.ContentsApiParams;
+import com.nexters.duckji.dto.ListResponse;
 import com.nexters.duckji.dto.PageInfoParams;
 import com.nexters.duckji.repository.ContentsRepository;
 
 import reactor.core.publisher.Mono;
 
 @Service
-public class ContentsService extends ContentsResponseCombinator {
+public class ContentsService extends ResponseCombinator<Content> {
 	private final ContentsRepository contentsRepository;
 	private final ReactiveMongoTemplate template;
 
@@ -43,7 +43,7 @@ public class ContentsService extends ContentsResponseCombinator {
 		return contentsRepository.findById(contentId);
 	}
 
-	public Mono<ContentsResponse> findAll(ContentsApiParams apiParams, PageInfoParams pageInfoParams) {
+	public Mono<ListResponse<Content>> findAll(ContentsApiParams apiParams, PageInfoParams pageInfoParams) {
 		int originLimit = pageInfoParams.getLimit();
 		PageRequest pageRequest = pageInfoParams.pageRequest();
 

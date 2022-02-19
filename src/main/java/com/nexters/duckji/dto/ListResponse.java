@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContentsResponse {
-	private List<Content> contents;
+public class ListResponse<T> {
+	private List<T> contents;
 	private Long totalCount;
 	private PageInfo pageInfo;
 }

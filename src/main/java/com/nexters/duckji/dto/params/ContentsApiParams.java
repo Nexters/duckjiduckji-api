@@ -1,10 +1,11 @@
-package com.nexters.duckji.dto;
+package com.nexters.duckji.dto.params;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.util.ObjectUtils;
 
 import com.nexters.duckji.domain.ContentType;
+import com.nexters.duckji.dto.CriteriaParams;
 import com.nexters.duckji.validator.ObjectIdFormat;
 
 import io.swagger.annotations.ApiModel;

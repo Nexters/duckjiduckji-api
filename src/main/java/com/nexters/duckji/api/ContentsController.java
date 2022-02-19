@@ -17,8 +17,8 @@ import com.nexters.duckji.domain.Content;
 import com.nexters.duckji.dto.ApiResponse;
 import com.nexters.duckji.dto.ContentRegisterRequest;
 import com.nexters.duckji.dto.update.ContentUpdateRequest;
-import com.nexters.duckji.dto.ContentsApiParams;
-import com.nexters.duckji.dto.ContentsResponse;
+import com.nexters.duckji.dto.params.ContentsApiParams;
+import com.nexters.duckji.dto.ListResponse;
 import com.nexters.duckji.dto.PageInfoParams;
 import com.nexters.duckji.service.ContentsService;
 
@@ -71,7 +71,7 @@ public class ContentsController {
 
 	@ApiOperation("컨텐츠 리스트 조회")
 	@GetMapping
-	public Mono<ApiResponse<ContentsResponse>> getContents(@Valid ContentsApiParams params, @Valid PageInfoParams pageInfoParams) {
+	public Mono<ApiResponse<ListResponse<Content>>> getContents(@Valid ContentsApiParams params, @Valid PageInfoParams pageInfoParams) {
 		return contentsService.findAll(params, pageInfoParams)
 				.map(ApiResponse::create)
 				.switchIfEmpty(Mono.just(ApiResponse.empty()));
