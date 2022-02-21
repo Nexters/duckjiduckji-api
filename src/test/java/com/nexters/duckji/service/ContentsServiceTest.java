@@ -13,8 +13,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.nexters.duckji.config.TestEmbeddedMongoConfig;
+import com.nexters.duckji.domain.Content;
 import com.nexters.duckji.domain.ContentType;
+import com.nexters.duckji.domain.Point;
 import com.nexters.duckji.dto.PolaroidRegisterRequest;
+import com.nexters.duckji.dto.update.LocationUpdateRequest;
 import com.nexters.duckji.dto.update.PolaroidUpdateRequest;
 
 import reactor.test.StepVerifier;
@@ -64,5 +67,25 @@ class ContentsServiceTest {
 		StepVerifier.create(contentsService.replaceById(updateRequest, contentId))
 				.expectError(ResponseStatusException.class)
 				.verify();
+	}
+
+	@RepeatedTest(5)
+	public void 컨텐츠_DRAG_테스트() {
+		PolaroidRegisterRequest registerRequest = fixtureMonkey.giveMeOne(PolaroidRegisterRequest.class);
+		Content content = contentsService.register(registerRequest).block();
+		String contentId = content.getId();
+
+		LocationUpdateRequest updateRequest = fixtureMonkey.giveMeOne(LocationUpdateRequest.class);
+		Point updatePoint = updateRequest.getPoint();
+
+		StepVerifier.create(contentsService.drag(updateRequest, contentId))
+				.assertNext(c -> {
+					assertEquals(c.getId(), contentId);
+					Point point = c.getPoint();
+					assert point != null;
+					assertEquals(point.getX(), updatePoint.getX());
+					assertEquals(point.getX(), updatePoint.getY());
+					assertNotEquals(c.getEdtAt(), content.getEdtAt());
+				});
 	}
 }
