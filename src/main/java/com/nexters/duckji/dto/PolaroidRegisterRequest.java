@@ -28,7 +28,7 @@ public class PolaroidRegisterRequest implements ContentRegisterRequest {
 	@NotBlank(message = "roomId must not be blank")
 	private String roomId;
 	private String ownerId;
-	@NotBlank(message = "content must not be blank")
+	//@NotBlank(message = "content must not be blank")
 	private String content;
 	@Size(max = 5, message = "invalid images count")
 	private List<Image> images;
